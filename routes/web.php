@@ -8,4 +8,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('articles', ArticlesController::class);
+
 Route::get('/hello', [HelloController::class, 'sayHello']);
