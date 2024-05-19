@@ -9,6 +9,8 @@
     @vite('resources/sass/app.scss')
 </head>
 <body>
-
+<div id="app" class="container">
+    @yield('content')
+</div>
 </body>
 </html>
