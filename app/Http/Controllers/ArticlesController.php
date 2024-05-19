@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Jobs\ArticleDeleterJob;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
@@ -108,8 +109,7 @@ class ArticlesController extends Controller
      */
     public function destroy(string $id)
     {
-        $article = Article::find($id);
-        $article->delete();
+        ArticleDeleterJob::dispatch($id);
 
         return redirect()->route('articles.index')->with('success', 'Статья была удалена');
     }
