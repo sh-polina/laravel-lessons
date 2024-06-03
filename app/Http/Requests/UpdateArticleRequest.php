@@ -23,7 +23,7 @@ class UpdateArticleRequest extends FormRequest
     {
         return [
             'title' => 'required|string|min:3|max:255',
-            'article_body' => 'required|sting'
+            'article_body' => 'required|string'
         ];
     }
 
