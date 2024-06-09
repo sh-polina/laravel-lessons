@@ -13,4 +13,5 @@
         <li>{{ $category->name }}</li>
     @endforeach
     </ul>
+    <img width="100" height="100" src="{{ asset('storage/images/' . $article->image_path) }}" alt="">
 </div>
