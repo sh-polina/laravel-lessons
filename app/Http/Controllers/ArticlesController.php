@@ -8,13 +8,23 @@ use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
 use App\Models\User;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 
-class ArticlesController extends Controller
+class ArticlesController extends Controller implements HasMiddleware
 {
     /**
      * Display a listing of the resource.
      */
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth', only: ['edit'])
+        ];
+    }
+
     public function index()
     {
         $articles = Article::all();
