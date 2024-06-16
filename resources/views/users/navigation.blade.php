@@ -7,3 +7,4 @@
         <li><a href="{{ route('auth.login') }}">Логин</a></li>
     </ul>
 @endif
+
