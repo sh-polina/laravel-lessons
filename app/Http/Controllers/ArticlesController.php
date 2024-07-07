@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewArticleEvent;
 use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
+use App\Jobs\ArticleDeleterJob;
+use App\Jobs\EditedArticleMailJob;
+use App\Jobs\NewArticleMailJob;
 use App\Models\Article;
 use App\Models\ArticleCategory;
 use App\Models\Category;
@@ -64,6 +68,9 @@ class ArticlesController extends Controller
             throw $exception;
         }
 
+        NewArticleMailJob::dispatch();
+        NewArticleEvent::dispatch($article);
+
         return redirect()->route('articles.index');
     }
 
@@ -100,6 +107,8 @@ class ArticlesController extends Controller
 
         $article->save();
 
+        EditedArticleMailJob::dispatch($id);
+
         return redirect(route('articles.show', $article->id))->with('success', 'Статья была обновлена');
     }
 
@@ -108,8 +117,7 @@ class ArticlesController extends Controller
      */
     public function destroy(string $id)
     {
-        $article = Article::find($id);
-        $article->delete();
+        ArticleDeleterJob::dispatch($id);
 
         return redirect()->route('articles.index')->with('success', 'Статья была удалена');
     }
