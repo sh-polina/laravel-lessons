@@ -4,6 +4,7 @@
     </div>
 @endif
 <div class="panel">
+    {{--<p>Привет, {{ auth()->user()->name }}</p>--}}
     Articles list
     <a href="{{ route('articles.create') }}">Создать статью</a>
     <ul>
@@ -20,4 +21,6 @@
             @endforeach
         @endisset
     </ul>
+    <br>
+    <a href="{{ route('auth.logout') }}"><button>Выйти</button></a>
 </div>
