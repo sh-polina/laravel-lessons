@@ -5,7 +5,7 @@
 @endif
 
 <div>
-    <form action="{{route('articles.store')}}" method="post">
+    <form action="{{route('articles.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <input name="title" type="text">
         <textarea name="article_body"></textarea>
@@ -18,6 +18,7 @@
             <input type="checkbox" name="category[]" value="{{ $category->id }}"/>
             <label for="category">{{ $category->name }}</label>
         @endforeach
+        <input name="image" type="file" name="image">
         <button type="submit">Create</button>
     </form>
 </div>

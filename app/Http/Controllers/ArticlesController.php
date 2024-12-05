@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ArticlesController extends Controller implements HasMiddleware
 {
@@ -53,6 +54,13 @@ class ArticlesController extends Controller implements HasMiddleware
     public function store(CreateArticleRequest $request)
     {
         $request->validated();
+        if($request->hasFile('image')) {
+            $file = $request->file('image');
+            $imageName = $file->hashName();
+            //$file->move(public_path('images'), $imageName);
+            Storage::disk('local')->put('public/images', $file, 'public');
+        }
+
 
         DB::beginTransaction();
         try {
@@ -60,6 +68,7 @@ class ArticlesController extends Controller implements HasMiddleware
             $article->title = $request->get('title');
             $article->article_body = $request->get('article_body');
             $article->user_id = $request->get('user');
+            $article->image_path = $imageName;
 
             $article->save();
 
@@ -130,5 +139,12 @@ class ArticlesController extends Controller implements HasMiddleware
         ArticleDeleterJob::dispatch($id);
 
         return redirect()->route('articles.index')->with('success', 'Статья была удалена');
+    }
+
+    public function downloadImage(string $id)
+    {
+        $article = Article::find($id);
+
+        return Storage::download('public/images/' . $article->image_path, 'test');
     }
 }

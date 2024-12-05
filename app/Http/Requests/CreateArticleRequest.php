@@ -24,6 +24,7 @@ class CreateArticleRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:255',
             'article_body' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif',
         ];
     }
 
